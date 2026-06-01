@@ -14,7 +14,7 @@ import {
     Button,
     CircularProgress 
 } from '@mui/material';
-import Navigation from 'components/Navigation';
+import Navigation from '../../components/Navigation';
 import { api } from '../../services/api';
 import { CreditCard, Bank } from '../../types';
 
