@@ -18,7 +18,7 @@ import SecurityIcon from '@mui/icons-material/Security';
 import { useRouter } from 'next/router';
 import { api } from '../services/api';
 import { Bank } from '../types';
-import { IMAGE_BASE_URL } from 'config';
+import { IMAGE_BASE_URL } from '../config';
 
 const Home: React.FC = () => {
     const [banks, setBanks] = useState<Bank[]>([]);
