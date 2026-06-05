@@ -9,12 +9,13 @@ import {
   Chip,
   Grid,
   IconButton,
-  Collapse,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   Snackbar,
   Paper,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import CompareIcon from '@mui/icons-material/Compare';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { CreditCard } from '../types';
@@ -246,10 +247,9 @@ const SmartCardCard: React.FC<SmartCardCardProps> = ({
           </Button>
         </CardActions>
 
-        {/* Expandable Details */}
-        <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-          <Box sx={{ p: 2, backgroundColor: '#f9fafb', borderTop: '1px solid #e5e7eb' }}>
-            {/* Detailed Rewards */}
+        <Dialog open={isExpanded} onClose={onSelect} fullWidth maxWidth="sm">
+          <DialogTitle sx={{ fontWeight: 700, color: '#1F2937' }}>{card.name}</DialogTitle>
+          <DialogContent dividers>
             <Typography
               variant="subtitle2"
               sx={{
@@ -273,7 +273,6 @@ const SmartCardCard: React.FC<SmartCardCardProps> = ({
               {card.rewards || 'No rewards information available'}
             </Typography>
 
-            {/* Eligibility */}
             <Typography
               variant="subtitle2"
               sx={{
@@ -294,7 +293,6 @@ const SmartCardCard: React.FC<SmartCardCardProps> = ({
               </Typography>
             </Box>
 
-            {/* Fees */}
             <Typography
               variant="subtitle2"
               sx={{
@@ -317,63 +315,65 @@ const SmartCardCard: React.FC<SmartCardCardProps> = ({
                 Foreign Transaction Fee: {card.foreignTransactionFeePercent ? card.foreignTransactionFeePercent + '%' : 'Not specified'}
               </Typography>
             </Box>
-          </Box>
-        </Collapse>
 
-        {/* Similar Cards Suggestions */}
-        {isCompared && similarCards.length > 0 && (
-          <Collapse in={isCompared} timeout="auto" unmountOnExit>
-            <Box sx={{ p: 2, backgroundColor: '#fafbfc', borderTop: '1px solid #e5e7eb' }}>
-              <Typography
-                variant="caption"
-                sx={{
-                  fontWeight: 700,
-                  color: '#1F2937',
-                  textTransform: 'uppercase',
-                  fontSize: '11px',
-                  letterSpacing: '0.5px',
-                  display: 'block',
-                  mb: 1,
-                }}
-              >
-                Compare with Similar
-              </Typography>
-              <Grid container spacing={1}>
-                {similarCards.slice(0, 2).map((similar) => (
-                  <Grid item xs={6} key={similar.id}>
-                    <Paper
-                      onClick={() => onSimilarCardSelect?.(similar)}
-                      sx={{
-                        p: 1,
-                        cursor: 'pointer',
-                        backgroundColor: 'white',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: 1,
-                        transition: 'all 0.2s ease',
-                        '&:hover': {
-                          backgroundColor: '#f0f4ff',
-                          borderColor: '#667eea',
-                        },
-                      }}
-                    >
-                      <Typography
-                        variant="caption"
+            {isCompared && similarCards.length > 0 && (
+              <Box sx={{ mt: 3, p: 2, backgroundColor: '#fafbfc', borderRadius: 2, border: '1px solid #e5e7eb' }}>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontWeight: 700,
+                    color: '#1F2937',
+                    textTransform: 'uppercase',
+                    fontSize: '11px',
+                    letterSpacing: '0.5px',
+                    display: 'block',
+                    mb: 1,
+                  }}
+                >
+                  Compare with Similar
+                </Typography>
+                <Grid container spacing={1}>
+                  {similarCards.slice(0, 2).map((similar) => (
+                    <Grid item xs={6} key={similar.id}>
+                      <Paper
+                        onClick={() => onSimilarCardSelect?.(similar)}
                         sx={{
-                          fontWeight: 600,
-                          color: '#667eea',
-                          display: 'block',
-                          fontSize: '11px',
+                          p: 1,
+                          cursor: 'pointer',
+                          backgroundColor: 'white',
+                          border: '1px solid #e5e7eb',
+                          borderRadius: 1,
+                          transition: 'all 0.2s ease',
+                          '&:hover': {
+                            backgroundColor: '#f0f4ff',
+                            borderColor: '#667eea',
+                          },
                         }}
                       >
-                        {similar.name}
-                      </Typography>
-                    </Paper>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          </Collapse>
-        )}
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            fontWeight: 600,
+                            color: '#667eea',
+                            display: 'block',
+                            fontSize: '11px',
+                          }}
+                        >
+                          {similar.name}
+                        </Typography>
+                      </Paper>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onSelect} sx={{ color: '#667eea', fontWeight: 700 }}>
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Card>
 
       {/* Smart Notification Toast */}

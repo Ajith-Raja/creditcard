@@ -28,6 +28,8 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ cards }) => {
     { label: 'Features', key: 'features' },
   ];
 
+  const cardColumnWidth = cards.length > 0 ? Math.floor(100 / cards.length) : 100;
+
   const formatFee = (v: any) => {
     const n = Number(v) || 0;
     return n === 0 ? 'Free' : `₹${n}`;
@@ -56,12 +58,20 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ cards }) => {
 
   return (
     <TableContainer component={Paper} sx={{ mt: 4 }}>
-      <Table>
+      <Table sx={{ tableLayout: 'fixed', width: '100%' }}>
         <TableHead>
           <TableRow>
-            <TableCell />
+            <TableCell sx={{ width: 160 }} />
             {cards.map((card) => (
-              <TableCell key={card.id} align="center">
+              <TableCell
+                key={card.id}
+                align="center"
+                sx={{
+                  width: `${cardColumnWidth}%`,
+                  wordBreak: 'break-word',
+                  whiteSpace: 'normal',
+                }}
+              >
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
                   <img src={card.imageUrl || '/placeholder-card.png'} alt={card.name} style={{ width: 80, height: 48, objectFit: 'contain' }} />
                   <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{card.name}</Typography>
@@ -77,7 +87,16 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ cards }) => {
             <TableRow key={field.key}>
               <TableCell sx={{ fontWeight: 700 }}>{field.label}</TableCell>
               {cards.map((card) => (
-                <TableCell key={card.id} sx={{ color: '#374151', fontSize: '0.95rem' }}>
+                <TableCell
+                  key={card.id}
+                  sx={{
+                    color: '#374151',
+                    fontSize: '0.95rem',
+                    width: `${cardColumnWidth}%`,
+                    wordBreak: 'break-word',
+                    whiteSpace: 'normal',
+                  }}
+                >
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     {getValue(card, field.key)}
                   </Box>
